@@ -13,8 +13,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Handler().postDelayed({
                               startActivity(Intent(this,Camera::class.java))
-
+                              finish()
         }, 5000)
-        finish()
+
     }
 }
