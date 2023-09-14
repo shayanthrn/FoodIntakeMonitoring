@@ -17,6 +17,9 @@
         android:theme="@style/Theme.FoodIntakeMonitoring"
         tools:targetApi="31">
         <activity
+            android:name=".WeightInput"
+            android:exported="false" />
+        <activity
             android:name=".Result"
             android:exported="false" />
         <activity
