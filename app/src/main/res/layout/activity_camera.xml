@@ -5,13 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background_result"
     tools:context=".Camera">
 
     <ImageView
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:background="@color/white"
         android:src="@drawable/logoicon"></ImageView>
-
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
+        android:layout_width="match_parent"
+        android:layout_height="491dp" />
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_margin="50dp"
+        android:background="@drawable/round_button"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Capture"
+        android:textColor="#fff" />
 
 
 </LinearLayout>
