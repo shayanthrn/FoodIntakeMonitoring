@@ -28,6 +28,7 @@ class Camera : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
         cameraExecutor = Executors.newSingleThreadExecutor()
+        outputDirectory = getOutputDirectory()
         startCamera()
     }
 
