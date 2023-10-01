@@ -1,10 +1,14 @@
 package ca.shayanthrn.foodintakemonitoring
 
+import android.Manifest
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -30,6 +34,10 @@ class Camera : AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
         outputDirectory = getOutputDirectory()
         startCamera()
+        val captureButton: Button = findViewById(R.id.CaptureButton)
+        captureButton.setOnClickListener {
+          takePhoto()
+        }
     }
 
     private fun getOutputDirectory(): File {
@@ -41,7 +49,7 @@ class Camera : AppCompatActivity() {
     }
     override fun onDestroy() {
         super.onDestroy()
-        cameraExecutor.shutdown()
+//        cameraExecutor.shutdown()
     }
 
     private fun startCamera() {
@@ -81,7 +89,6 @@ class Camera : AppCompatActivity() {
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
-
         // Create time-stamped output file to hold the image
         val photoFile = File(
             outputDirectory,
@@ -89,10 +96,8 @@ class Camera : AppCompatActivity() {
                 FILENAME_FORMAT, Locale.US
             ).format(System.currentTimeMillis()) + ".jpg"
         )
-
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-
         // Set up image capture listener, which is triggered after photo has
         // been taken
         imageCapture.takePicture(
@@ -100,14 +105,14 @@ class Camera : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
-                    Log.e("Camera", "Photo capture failed: ${exc.message}", exc)
+                    Log.e("Camera123", "Photo capture failed: ${exc.message}", exc)
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d("Camera", msg)
+                    Log.d("Camera123", msg)
                 }
             })
     }
