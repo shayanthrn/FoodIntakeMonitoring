@@ -18,8 +18,9 @@ class MainActivity : AppCompatActivity() {
         ) { isGranted: Boolean ->
             if (isGranted) {
                 Log.i("Permission: ", "Granted")
-                startActivity(Intent(this,Camera::class.java))
-                finish()
+                requestPermissionLauncherint.launch(
+                    android.Manifest.permission.INTERNET
+                )
             } else {
                 Log.i("Permission: ", "Denied")
                 Toast.makeText(this, "This App requires your permission to work", Toast.LENGTH_SHORT).show()
@@ -48,6 +49,20 @@ class MainActivity : AppCompatActivity() {
                 requestPermissionLauncher.launch(
                     Manifest.permission.CAMERA
                 )
+            } else {
+                Log.i("Permission: ", "Denied")
+                Toast.makeText(this, "This App requires your permission to work", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private val requestPermissionLauncherint =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                Log.i("Permission: ", "Granted")
+                startActivity(Intent(this,Camera::class.java))
+                finish()
             } else {
                 Log.i("Permission: ", "Denied")
                 Toast.makeText(this, "This App requires your permission to work", Toast.LENGTH_SHORT).show()

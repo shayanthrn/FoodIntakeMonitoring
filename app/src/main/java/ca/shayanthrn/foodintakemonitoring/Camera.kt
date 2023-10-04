@@ -1,14 +1,14 @@
 package ca.shayanthrn.foodintakemonitoring
 
-import android.Manifest
-import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -16,7 +16,13 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
@@ -28,11 +34,16 @@ class Camera : AppCompatActivity() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
     val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+    private val client = OkHttpClient()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
         cameraExecutor = Executors.newSingleThreadExecutor()
         outputDirectory = getOutputDirectory()
+        if (Build.VERSION.SDK_INT > 9) {
+            val policy = ThreadPolicy.Builder().permitAll().build()
+            StrictMode.setThreadPolicy(policy)
+        }
         startCamera()
         val captureButton: Button = findViewById(R.id.CaptureButton)
         captureButton.setOnClickListener {
@@ -49,7 +60,50 @@ class Camera : AppCompatActivity() {
     }
     override fun onDestroy() {
         super.onDestroy()
-//        cameraExecutor.shutdown()
+        cameraExecutor.shutdown()
+    }
+
+//    fun sendPostRequest(fileuri:String) {
+//        val url = URL("http://127.0.0.1:8000/analyze/")
+//        var connection = url.openConnection() as HttpURLConnection
+//        connection.doInput = true
+//        connection.doOutput = true
+//        connection.requestMethod = "POST"
+//        connection.setRequestProperty("Content-Type","multipart/form-data")
+//        connection.useCaches = false
+//        val writeDataOutputStream = DataOutputStream(connection.outputStream)
+//        writeDataOutputStream.writeBytes("test")
+//        writeDataOutputStream.flush()
+//        writeDataOutputStream.close()
+//    }
+
+
+
+    fun sendPostRequest(file_uri: String?) {
+        // TODO handle connection refuse
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("pic", "pictoanalyze.jpg",
+                File(file_uri).asRequestBody(MEDIA_TYPE_JPG))
+            .build()
+
+        val request = Request.Builder()
+            .url("http://10.0.2.2/analyze/")
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            Log.d("sending request", response.body!!.string())
+        }
+    }
+
+    companion object {
+        /**
+         * The imgur client ID for OkHttp recipes. If you're using imgur for anything other than running
+         * these examples, please request your own client ID! https://api.imgur.com/oauth2
+         */
+        private val MEDIA_TYPE_JPG = "image/jpeg".toMediaType()
     }
 
     private fun startCamera() {
@@ -110,6 +164,7 @@ class Camera : AppCompatActivity() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
+                    sendPostRequest(savedUri.path)
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d("Camera123", msg)
