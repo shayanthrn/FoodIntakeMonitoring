@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" android:background="@color/white">
             <TextView
+                android:id="@+id/detected_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -28,6 +29,7 @@
                 android:textSize="30dp"
                 ></TextView>
             <TextView
+                android:id="@+id/mass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -36,6 +38,7 @@
                 android:textSize="16dp"
                 ></TextView>
             <ImageView
+                android:id="@+id/food_img"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_margin="20dp"
@@ -77,6 +80,7 @@
                 android:layout_weight="1"
                 android:text="carbohydrates" />
             <TextView
+                android:id="@+id/carb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -95,6 +99,7 @@
                 android:layout_weight="1"
                 android:text="protein" />
             <TextView
+                android:id="@+id/prot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -114,6 +119,7 @@
                 android:layout_weight="1"
                 android:text="fat" />
             <TextView
+                android:id="@+id/fat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -134,6 +140,7 @@
                 android:layout_weight="1"
                 android:text="calories" />
             <TextView
+                android:id="@+id/cal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -141,7 +148,13 @@
 
 
         </TableRow>
-
+        <Button
+            android:id="@+id/back"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_margin="17dp"
+            android:text="Back to image capturing"
+            />
 
 
     </TableLayout>

@@ -1,5 +1,6 @@
 package ca.shayanthrn.foodintakemonitoring
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -63,26 +64,11 @@ class Camera : AppCompatActivity() {
         cameraExecutor.shutdown()
     }
 
-//    fun sendPostRequest(fileuri:String) {
-//        val url = URL("http://127.0.0.1:8000/analyze/")
-//        var connection = url.openConnection() as HttpURLConnection
-//        connection.doInput = true
-//        connection.doOutput = true
-//        connection.requestMethod = "POST"
-//        connection.setRequestProperty("Content-Type","multipart/form-data")
-//        connection.useCaches = false
-//        val writeDataOutputStream = DataOutputStream(connection.outputStream)
-//        writeDataOutputStream.writeBytes("test")
-//        writeDataOutputStream.flush()
-//        writeDataOutputStream.close()
-//    }
-
-
-
-    fun sendPostRequest(file_uri: String?) {
+    fun sendPostRequest(file_uri: String?, mass: String?) {
         // TODO handle connection refuse
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
+            .addFormDataPart("mass",mass.toString())
             .addFormDataPart("pic", "pictoanalyze.jpg",
                 File(file_uri).asRequestBody(MEDIA_TYPE_JPG))
             .build()
@@ -99,10 +85,6 @@ class Camera : AppCompatActivity() {
     }
 
     companion object {
-        /**
-         * The imgur client ID for OkHttp recipes. If you're using imgur for anything other than running
-         * these examples, please request your own client ID! https://api.imgur.com/oauth2
-         */
         private val MEDIA_TYPE_JPG = "image/jpeg".toMediaType()
     }
 
@@ -164,7 +146,17 @@ class Camera : AppCompatActivity() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
-                    sendPostRequest(savedUri.path)
+                    //TODO get mass
+                    var mass: String? = null
+                    if(mass==null){
+                        var i = Intent(this@Camera,WeightInput::class.java)
+                        i.putExtra("file_uri",savedUri.path);
+                        startActivity(i)
+                        finish()
+                    }
+                    else{
+                        sendPostRequest(savedUri.path,mass)
+                    }
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d("Camera123", msg)

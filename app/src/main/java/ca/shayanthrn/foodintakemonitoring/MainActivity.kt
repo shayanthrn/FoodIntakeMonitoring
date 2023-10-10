@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
             if (isGranted) {
                 Log.i("Permission: ", "Granted")
                 requestPermissionLauncherint.launch(
-                    android.Manifest.permission.INTERNET
+                    Manifest.permission.INTERNET
                 )
             } else {
                 Log.i("Permission: ", "Denied")
