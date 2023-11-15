@@ -75,12 +75,13 @@
                 android:layout_weight="1"
                 android:text="1" />
             <TextView
+                android:id="@+id/field1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="carbohydrates" />
             <TextView
-                android:id="@+id/carb"
+                android:id="@+id/value1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -94,12 +95,13 @@
                 android:layout_weight="1"
                 android:text="2" />
             <TextView
+                android:id="@+id/field2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="protein" />
             <TextView
-                android:id="@+id/prot"
+                android:id="@+id/value2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -114,12 +116,13 @@
                 android:layout_weight="1"
                 android:text="3" />
             <TextView
+                android:id="@+id/field3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="fat" />
             <TextView
-                android:id="@+id/fat"
+                android:id="@+id/value3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -135,12 +138,13 @@
                 android:layout_weight="1"
                 android:text="4" />
             <TextView
+                android:id="@+id/field4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="calories" />
             <TextView
-                android:id="@+id/cal"
+                android:id="@+id/value4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

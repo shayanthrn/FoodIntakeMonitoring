@@ -22,6 +22,7 @@ import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
+import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -68,9 +69,8 @@ class Camera : AppCompatActivity() {
         // TODO handle connection refuse
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart("mass",mass.toString())
             .addFormDataPart("pic", "pictoanalyze.jpg",
-                File(file_uri).asRequestBody(MEDIA_TYPE_JPG))
+                File(file_uri).asRequestBody(Camera.MEDIA_TYPE_JPG))
             .build()
 
         val request = Request.Builder()
@@ -80,7 +80,16 @@ class Camera : AppCompatActivity() {
 
         client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            Log.d("sending request", response.body!!.string())
+            var response_str = response.body!!.string()
+            Log.d("sending request", response_str)
+            val answer = JSONObject(response_str)
+            var i = Intent(this@Camera,Result::class.java)
+            i.putExtra("detected_category",answer.get("detected_category").toString())
+            i.putExtra("response",answer.get("response").toString())
+            i.putExtra("mass",mass.toString())
+            i.putExtra("file_uri",file_uri)
+            startActivity(i)
+            finish()
         }
     }
 

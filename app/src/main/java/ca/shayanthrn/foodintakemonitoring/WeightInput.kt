@@ -33,7 +33,6 @@ class WeightInput : AppCompatActivity() {
         // TODO handle connection refuse
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart("mass",mass.toString())
             .addFormDataPart("pic", "pictoanalyze.jpg",
                 File(file_uri).asRequestBody(WeightInput.MEDIA_TYPE_JPG))
             .build()
@@ -50,11 +49,8 @@ class WeightInput : AppCompatActivity() {
             val answer = JSONObject(response_str)
             var i = Intent(this@WeightInput,Result::class.java)
             i.putExtra("detected_category",answer.get("detected_category").toString())
-            i.putExtra("carb",answer.get("carb").toString())
-            i.putExtra("prot",answer.get("prot").toString())
-            i.putExtra("fat",answer.get("fat").toString())
-            i.putExtra("cal",answer.get("cal").toString())
-            i.putExtra("mass",answer.get("mass").toString())
+            i.putExtra("response",answer.get("response").toString())
+            i.putExtra("mass",mass.toString())
             i.putExtra("file_uri",file_uri)
             startActivity(i)
             finish()
