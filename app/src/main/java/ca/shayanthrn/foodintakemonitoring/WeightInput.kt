@@ -38,7 +38,7 @@ class WeightInput : AppCompatActivity() {
             .build()
 
         val request = Request.Builder()
-            .url("http://10.0.2.2/analyze/")
+            .url("http://192.168.2.181/analyze/")
             .post(requestBody)
             .build()
 

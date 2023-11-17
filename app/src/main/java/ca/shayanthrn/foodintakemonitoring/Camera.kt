@@ -25,10 +25,14 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
+import java.net.Socket
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.PrintWriter
 
 
 class Camera : AppCompatActivity() {
@@ -74,7 +78,7 @@ class Camera : AppCompatActivity() {
             .build()
 
         val request = Request.Builder()
-            .url("http://10.0.2.2/analyze/")
+            .url("http://192.168.2.181/analyze/")
             .post(requestBody)
             .build()
 
@@ -155,9 +159,39 @@ class Camera : AppCompatActivity() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
-                    //TODO get mass
                     var mass: String? = null
+                    try {
+                        // Create a socket and connect to the microcontroller
+                        val socket = Socket("192.168.2.191", 5432)
+
+                        // Set up input and output streams
+                        val inputStream = BufferedReader(InputStreamReader(socket.getInputStream()))
+                        val outputStream = PrintWriter(socket.getOutputStream(), true)
+
+                        // Send a message to the microcontroller
+                        val messageToSend = "Hello, Microcontroller!"
+                        outputStream.println(messageToSend)
+
+                        // Receive a response from the microcontroller
+                        // Wait until a message is received
+                        var receivedMessage: String? = null
+                        while (receivedMessage == null) {
+                            receivedMessage = inputStream.readLine()
+                            if (receivedMessage != null) {
+                                Log.d("socket", "Received from microcontroller: $receivedMessage")
+                                mass = receivedMessage.toString()
+                                Log.d("socket", "This is Mass: $mass")
+                            }
+                        }
+                        // Close the socket when done
+                        socket.close()
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
                     if(mass==null){
+                        Log.d("socket","This is Mass2: $mass")
                         var i = Intent(this@Camera,WeightInput::class.java)
                         i.putExtra("file_uri",savedUri.path);
                         startActivity(i)

@@ -39,22 +39,26 @@ class Result : AppCompatActivity() {
             if(nutrient.get("nutrientId")==1003){ //protein
                 field1.text = nutrient.get("nutrientName").toString()
                 val value = (massDouble!! / 100.0) * (nutrient.get("value")?.toString()?.toDoubleOrNull()!!)
-                value1.text = "${value.toString()} ${nutrient.get("unitName")}"
+                val formattedValue = String.format("%.2f", value)
+                value1.text = "${formattedValue} ${nutrient.get("unitName")}"
             }
             if(nutrient.get("nutrientId")==1004){ //fat
                 field2.text = nutrient.get("nutrientName").toString()
                 val value = (massDouble!! / 100.0) * (nutrient.get("value")?.toString()?.toDoubleOrNull()!!)
-                value2.text = "${value.toString()} ${nutrient.get("unitName")}"
+                val formattedValue = String.format("%.2f", value)
+                value2.text = "${formattedValue} ${nutrient.get("unitName")}"
             }
             if(nutrient.get("nutrientId")==1005){ //carb
                 field3.text = nutrient.get("nutrientName").toString()
                 val value = (massDouble!! / 100.0) * (nutrient.get("value")?.toString()?.toDoubleOrNull()!!)
-                value3.text = "${value.toString()} ${nutrient.get("unitName")}"
+                val formattedValue = String.format("%.2f", value)
+                value3.text = "${formattedValue} ${nutrient.get("unitName")}"
             }
             if(nutrient.get("nutrientId")==1008){ //Cal
                 field4.text = nutrient.get("nutrientName").toString()
                 val value = (massDouble!! / 100.0) * (nutrient.get("value")?.toString()?.toDoubleOrNull()!!)
-                value4.text = "${value.toString()} ${nutrient.get("unitName")}"
+                val formattedValue = String.format("%.2f", value)
+                value4.text = "${formattedValue} ${nutrient.get("unitName")}"
             }
         }
         val file_uri = intent.extras?.getString("file_uri")

@@ -17,12 +17,13 @@
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
         android:layout_height="491dp" />
+
     <Button
         android:id="@+id/CaptureButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_gravity="center"
-        android:layout_margin="50dp"
+        android:layout_margin="20dp"
         android:background="@drawable/round_button"
         android:gravity="center_vertical|center_horizontal"
         android:text="Capture"
